@@ -25,12 +25,13 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
 
     const checkUser = () => {
+        setLoading(true);
         const user = localStorage.getItem('user');
         if (user) {
             setUser(JSON.parse(user));
         }
+        setLoading(false);
     }
-
     useEffect(() => {
         checkUser();
     }

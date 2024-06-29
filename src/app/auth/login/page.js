@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useUser } from "@/context/User";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [user, setUser] = useState({
@@ -25,6 +26,7 @@ export default function Login() {
         });
     }
 
+    const router = useRouter()
     const handleSubmit = (e) => {
         e.preventDefault();
         if (user.email.trim() === "" || user.password.trim() === "") {
@@ -32,6 +34,7 @@ export default function Login() {
             return
         }
         login({ ...user, rememberMe });
+        router.push("/report");
     }
 
     if (loading) return (
