@@ -5,8 +5,8 @@ import ReportCard from "@/components/reportCard";
 export default function Report() {
     return (
         <div>
-        <Header />
-        <ReportCard />
+            <Header />
+            <ReportCard />
         </div>
     );
 }
