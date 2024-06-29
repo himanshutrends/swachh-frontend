@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Signup() {
     return (
-        <main className="w-full h-screen flex flex-col items-center justify-center px-4">
+        <main className="w-full h-screen flex flex-col items-center bg-white justify-center px-4">
             <div className="max-w-sm w-full text-gray-600">
                 <div className="text-center">
                     <Image src="/swachh-logo.png" width={150} height={30} className="mx-auto" />
@@ -12,7 +12,6 @@ export default function Signup() {
                     </div>
                 </div>
                 <form
-                    onSubmit={(e) => e.preventDefault()}
                     className="mt-8 space-y-5"
                 >
                     <div>
