@@ -10,14 +10,11 @@ export default function Header() {
     const navRef = useRef()
     const { user } = useUser()
 
-    const navigation = [
-        { title: "Customers", path: "javascript:void(0)" },
-        { title: "Careers", path: "javascript:void(0)" },
-        { title: "Guides", path: "javascript:void(0)" },
-        { title: "Partners", path: "javascript:void(0)" },
-        { title: "Teams", path: "javascript:void(0)" },
-        { title: "Blog", path: "javascript:void(0)" }
-    ]
+  const navigation = [
+      { title: "Check Status", path: "javascript:void(0)" },
+      { title: "Map", path: "javascript:void(0)" },
+      { title: "Team", path: "javascript:void(0)" },
+  ]
 
     useEffect(() => {
         console.log(user)
