@@ -17,7 +17,6 @@ export default function Header() {
   ]
 
     useEffect(() => {
-        console.log(user)
         const body = document.body
         // Disable scrolling
         const customBodyStyle = ["overflow-hidden", "lg:overflow-visible"]
@@ -36,8 +35,8 @@ export default function Header() {
         <nav ref={navRef} className="bg-white w-full top-0 z-20">
             <div className="items-center px-4 max-w-screen-xl mx-auto md:px-8 lg:flex">
                 <div className="flex items-center justify-between py-3 lg:py-4 lg:block">
-                        <Link href="javascript:void(0)">
-                            <Image src="/swachh-logo.png" width={150} height={30} className="mx-auto" />
+                        <Link href="/">
+                            <Image src="/swachh-logo.png" width={150} height={30} className="mx-auto" alt="Swachh Logo" />
                         </Link>
                     <div className="lg:hidden">
                         <button className="text-gray-700 outline-none p-2 rounded-md focus:border-gray-400 focus:border"

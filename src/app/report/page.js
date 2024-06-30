@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Header from "@/components/ui/header";
 import ReportCard from "@/components/reportCard";
 
-export default function Report() {
+const Report = () => {
     return (
         <div>
             <Header />
@@ -10,3 +9,5 @@ export default function Report() {
         </div>
     );
 }
+
+export default Report;

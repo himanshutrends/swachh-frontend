@@ -1,43 +1,58 @@
+'use client'
+import React, {useEffect, useState, useRef} from 'react'
+import { useUser } from '@/context/User'
+
 export default function ReportTable() {
+    const { user, setResponseCode } = useUser()
+    const [loading, setLoading] = useState(false)
+    const [tableItems, setTableItems] = useState([])    
 
-    const tableItems = [
-        {
-            id: "L0912393",
-            date: "Oct 9, 2023",
-            status: "Active",
-            level: "35.000",
-            address: "Sherpura"
-        },
-        {
-            id: "H934935",
-            date: "Oct 12, 2023",
-            status: "Active",
-            level: "12.000",
-            address: "Sherpura"
-        },
-        {
-            id: "M83748374",
-            date: "Oct 22, 2023",
-            status: "Collected",
-            level: "20.000",
-            address: "Durga Nagar"
-        },
-        {
-            id: "L673647637",
-            date: "Jan 5, 2023",
-            status: "Active",
-            level: "5.000",
-            address: "Sherpura"
-        },
-        {
-            id: "M2424255",
-            date: "Jan 6, 2023",
-            status: "Active",
-            level: "90.000",
-            address: "Durga Nagar"
-        },
-    ]
+    useEffect(() => {
+    (async () => {
+        setLoading(true)
+        try {
+            if (user.access_token) {
+                const response = await fetch(`http://localhost:5000/waste/reports`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.access_token}`
+                    }
+                })
+                setResponseCode(response.status)
+                const data = await response.json()
+                setTableItems(data)
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
 
+    })()
+    }, [])
+    
+    const updateStatus = async (id, status) => {
+        setLoading(true)
+        if (user.access_token) {
+            const response = await fetch(`http://localhost:5000/waste/reports?id=${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.access_token}`
+                },
+                body: JSON.stringify({ status })
+            })
+            setResponseCode(response.status)
+        }
+        setLoading(false)
+    }
+
+    if (loading) {
+        return <div className="flex justify-center items-center h-screen">
+            <p>Loading...</p>
+        </div>
+    }
 
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 pt-10">
@@ -67,18 +82,17 @@ export default function ReportTable() {
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divNamee-y">
-                        {
-                            tableItems.map((item, Namex) => (
+                        {tableItems && tableItems.map((item, Namex) => (
                                 <tr key={Namex}>
-                                    <td className="pr-6 py-4 whitespace-nowrap">{item.id}</td>
-                                    <td className="pr-6 py-4 whitespace-nowrap">{item.date}</td>
+                                    <td className="pr-6 py-4 whitespace-nowrap">{item._id}</td>
+                                    <td className="pr-6 py-4 whitespace-nowrap">{item.reported_at}</td>
                                     <td className="pr-6 py-4 whitespace-nowrap">
                                         <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status == "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
                                             {item.status}
                                         </span>
                                     </td>
                                     <td className="pr-6 py-4 whitespace-nowrap">{item.address}</td>
-                                    <td className="pr-6 py-4 whitespace-nowrap">{item.level}</td>
+                                    <td className="pr-6 py-4 whitespace-nowrap">{item.fillLevel}</td>
                                     <td className="text-right whitespace-nowrap">
                                         <div className="relative max-w-full mx-auto p-1">
                                             <svg
@@ -93,11 +107,13 @@ export default function ReportTable() {
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <select className="w-full px-3 py-2 text-sm text-gray-600 bg-white border rounded-lg shadow-sm outline-none appearance-none focus:ring-offset-2 focus:ring-indigo-600 focus:ring-2">
-                                                <option>Active</option>
+                                            <select 
+                                                onChange={(e) => updateStatus(item._id, e.target.value)}
+                                                className="w-full px-3 py-2 text-sm text-gray-600 bg-white border rounded-lg shadow-sm outline-none appearance-none focus:ring-offset-2 focus:ring-indigo-600 focus:ring-2">
+                                                <option>Pending</option>
                                                 <option>Accepted</option>
                                                 <option>Collected</option>
-                                                <option>Close</option>
+                                                <option>Closed</option>
                                             </select>
                                         </div>
                                     </td>
