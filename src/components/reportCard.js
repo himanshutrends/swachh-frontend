@@ -1,10 +1,13 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/context/User';
+import isAuthenticated from "@/components/isAuthenticated";
+import Link from 'next/link';
 
-export default function ReportCard() {
-    const { user, loading, logout } = useUser()
+const ReportCard = () => {
+    const { user, loading, logout, setResponseCode } = useUser()
     const [local_loading, setLocalLoading] = useState(loading)
+    const [report_id, setReportId] = useState("")
     const [notification, setNotification] = useState({
         status: false,
         message: "",
@@ -13,7 +16,7 @@ export default function ReportCard() {
 
     useEffect(() => {
         setLocalLoading(loading)
-    }, [loading, user, notification])
+    }, [loading, notification])
 
     const [report, setReport] = useState({
         name: "",
@@ -32,7 +35,6 @@ export default function ReportCard() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLocalLoading(true)
-        console.log(report)
         const { name, phone, address, fillLevel } = report
         if (!name || !phone || !address || !fillLevel) {
             setNotification({
@@ -53,19 +55,16 @@ export default function ReportCard() {
                 body: JSON.stringify(report)
             })
             const data = await response.json();
-            console.log(data)
-            if (response.status === 401) {
-                logout();
-                throw new Error(data.msg);
-            }
+            setResponseCode(response.status)
             if (response.status !== 200) {
                 throw new Error(data.msg);
             }
             setNotification({
                 status: true,
                 message: "Report Submitted Successfully",
-                type: "success"
+                type: "Success"
             })
+            setReportId(data.report.report_id)
         } catch (error) {
             setNotification({
                 status: true,
@@ -152,7 +151,7 @@ export default function ReportCard() {
                     </button>
                 </form>
 
-                <p className="text-center">Already Repoted? <a href="javascript:void(0)" className="font-medium text-indigo-600 hover:text-indigo-500">Check Status</a></p>
+                <p className="text-center">Already Repoted? <Link href="/report/status" className="font-medium text-indigo-600 hover:text-indigo-500">Check Status</Link></p>
             </div>
 
             {notification.status && (<div className="mt-12 mx-4 px-4 rounded-md border-l-4 border-green-500 bg-green-50 md:max-w-2xl md:mx-auto md:px-8">
@@ -169,7 +168,7 @@ export default function ReportCard() {
                             </span>
                             <p className="text-green-600 mt-1">
                                 { notification.message } <br />
-                                { notification.type == 'Sucess' ? <b>Report ID: 123456</b> : ""}
+                                { notification.type == 'Success' ? <b>Report ID: { report_id }</b> : ""}
                             </p>
                         </div>
                     </div>
@@ -183,3 +182,5 @@ export default function ReportCard() {
         </section>
     )
 }
+
+export default isAuthenticated(ReportCard);

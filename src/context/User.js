@@ -4,7 +4,9 @@ import { createContext, useContext, useState, useEffect } from 'react';
 export const UserContext = createContext({
     user: {},
     error: {},
-    loading: false,
+    loading: true,
+    response_code: 200,
+    setResponseCode: () => { },
     login: () => { },
     logout: () => { },
 })
@@ -12,6 +14,9 @@ export const UserContext = createContext({
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
+    const [loading, setLoading] = useState(true);
+    const [response_code, setResponseCode] = useState(200);
+
     const [user, setUser] = useState({
         email: "",
         rememberMe: false
@@ -22,20 +27,21 @@ export const UserProvider = ({ children }) => {
         status: false
     });
 
-    const [loading, setLoading] = useState(false);
-
-    const checkUser = () => {
+    useEffect(() => {
         setLoading(true);
         const user = localStorage.getItem('user');
         if (user) {
-            setUser(JSON.parse(user));
+            setUser((prev) => JSON.parse(user));
+        }
+        if (response_code === 401) {
+            setError({
+                message: "You are not authorized to view this page. Please login again.",
+                status: true
+            })
         }
         setLoading(false);
-    }
-    useEffect(() => {
-        checkUser();
-    }
-    , [])
+    }, [response_code])
+
 
     const login = async (auth_user) => {
         setLoading(true);
@@ -126,6 +132,8 @@ export const UserProvider = ({ children }) => {
             user,
             error,
             loading,
+            response_code,
+            setResponseCode,
             login,
             signup,
             logout
