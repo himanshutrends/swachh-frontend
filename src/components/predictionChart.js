@@ -1,7 +1,11 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
 import { useUser } from '@/context/User';
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import { Line } from 'react-chartjs-2';
+
+Chart.register(CategoryScale);
 
 const PredictionChart = () => {
   const [chartData, setChartData] = useState({
@@ -36,15 +40,15 @@ const PredictionChart = () => {
           const data = await response.json();
           const labels = data.map(item => item.date);
           const predictedLevels = data.map(item => item.predicted_level);
-          setChartData({
-            labels: labels,
-            datasets: [
-              {
-                ...chartData.datasets[0],
-                data: predictedLevels,
-              },
-            ],
-          });
+          // setChartData({
+          //   labels: labels,
+          //   datasets: [
+          //     {
+          //       ...chartData.datasets[0],
+          //       data: predictedLevels,
+          //     },
+          //   ],
+          // });
         } catch (error) {
           console.error('Error fetching data:', error);
         }
