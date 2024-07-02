@@ -11,9 +11,8 @@ export default function Header() {
     const { user } = useUser()
 
   const navigation = [
-      { title: "Check Status", path: "javascript:void(0)" },
-      { title: "Map", path: "javascript:void(0)" },
-      { title: "Team", path: "javascript:void(0)" },
+      { title: "Report", path: "/report" },
+      { title: "Check Status", path: "/report/status" },
   ]
 
     useEffect(() => {
@@ -59,11 +58,6 @@ export default function Header() {
                 <div className={`flex-1 justify-between flex-row-reverse lg:overflow-visible lg:flex lg:pb-0 lg:pr-0 lg:h-auto ${ state ? 'h-screen pb-20 overflow-auto pr-4' : 'hidden'}`}>
                         <div>
                             <ul className="flex flex-col-reverse space-x-0 lg:space-x-6 lg:flex-row">
-                                <li className="mt-8 mb-8 lg:mt-0 lg:mb-0">
-                                    <Link href="javascript:void(0)" className="text-gray-600 hover:text-indigo-600">
-                                        Contact
-                                    </Link>
-                                </li>
                                 { user.email ? (
                                     <li className="mt-8 lg:mt-0">
                                         <Link href="/dashboard" className="py-3 px-4 text-center text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow block lg:inline">
