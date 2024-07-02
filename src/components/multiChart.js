@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { da } from '@faker-js/faker';
 
 ChartJS.register(
   CategoryScale,
@@ -85,15 +86,15 @@ export default function MultiChart() {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + user.access_token
             },
-            body: JSON.stringify({ date: '15/07/2024' }), // Adjust date as needed
+            body: JSON.stringify({ 'date': '2024-06-01', 'level': '0.1' }), // Adjust date as needed
           });
           if (!response.status === 200) {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          console.log(data)
           const labels = data.map(item => item.date);
-          const predictedLevels = data.map(item => item.predicted_level);
+          const predictedLevels = data.map(item => item.level);
+
           setChartData({
             labels: labels,
             datasets: [
@@ -102,11 +103,18 @@ export default function MultiChart() {
                 data: predictedLevels,
               },
               {
-                ...chartData.datasets[0],
-                data: predictedLevels,
+                ...chartData.datasets[1],
+                data: [
+                  10,
+                  25,
+                  30,
+                  45,
+                  80,
+                  0
+                ]
               },
             ],
-          });
+          })
         } catch (error) {
           console.error('Error fetching data:', error);
         }
