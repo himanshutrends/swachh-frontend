@@ -31,7 +31,8 @@ export const UserProvider = ({ children }) => {
         setLoading(true);
         const user = localStorage.getItem('user');
         if (user) {
-            setUser((prev) => JSON.parse(user));
+            setUser(JSON.parse(user));
+            console.log(user);
         }
         if (response_code === 401) {
             setError({
