@@ -51,7 +51,7 @@ export default function SideNav() {
     return (
         <>
             <nav
-                className="fixed top-0 left-0 w-full h-full border-r bg-white space-y-8 sm:w-80">
+                className="w-full h-full border-r bg-white space-y-8 sm:w-80">
                 <div className="flex flex-col h-full">
                     <div className='h-20 flex items-center px-8 mt-2 border-b-2'>
                         <Link href='/' className='flex-none'>

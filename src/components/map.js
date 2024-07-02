@@ -62,7 +62,7 @@ const MapComponent = () => {
         <>
         <LoadScript googleMapsApiKey="AIzaSyB-fBkFNcH9NsY1iIoR4IIMqsLU_u0HQSU">
             <GoogleMap
-                mapContainerStyle={{ width: '100%', height: '500px' }}
+                mapContainerStyle={{ width: '100%', height: '100%' }}
                 center={{ lat: 22.9734, lng: 78.6569 }}
                 zoom={10}
             >
@@ -79,7 +79,7 @@ const MapComponent = () => {
                 )}
             </GoogleMap>
         </LoadScript>
-        <button onClick={fetchRoute}>Find Optimal Route</button>
+        <button className="bg-blue-500 hover:bg-blue-700 w-fit text-white font-bold py-2 px-4 rounded-full" onClick={fetchRoute}>Find Optimal Route</button>
         </>
     );
 };
